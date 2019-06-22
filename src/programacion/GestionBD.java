@@ -35,7 +35,7 @@ public class GestionBD {
             conexion = DriverManager.getConnection(url);
             sentencia = conexion.createStatement();
             
-           String sql = "CREATE TABLE Usuario ("
+           String sql = "CREATE TABLE CLIENTE("
                    + "ID     INT PRIMARY KEY NOT NULL,"
                    + "NOMBRE   VARCHAR(50) NOT NULL,"
                    + "APELLIDO VARCHAR(50) NOT NULL,"
@@ -58,7 +58,7 @@ public class GestionBD {
             conexion = DriverManager.getConnection(url);
             
             sentencia = conexion.createStatement();
-            String sql = "INSERT INTO Usuario("
+            String sql = "INSERT INTO CLIENTE("
                     + "ID, NOMBRE, APELLIDO, RUT, EDAD, DIRECCION, SEXO)"
                     + "VALUES('"+id+"', '"+nom+"', '"+ape+"', '"+rut+"', '"+edad+"', '"+dire+"', '"+sexo+"')";
                       
@@ -71,7 +71,7 @@ public class GestionBD {
         }
          JOptionPane.showMessageDialog(null,"DATOS INGRESADOS CON EXITO");
     }
-    public void seleccionar(JTable tablaseleccionar){
+    public void seleccionarCliente(JTable tablaseleccionar){
          try{
             Class.forName(Driver);
             conexion = DriverManager.getConnection(url);
@@ -82,13 +82,14 @@ public class GestionBD {
             resultados = sentencia.executeQuery(sql);
             int fila = 0;
             while(resultados.next()){
+                
                 tablaseleccionar.setValueAt(resultados.getInt("ID"), fila, 0);
                 tablaseleccionar.setValueAt(resultados.getInt("Nombre"), fila, 1);
                 tablaseleccionar.setValueAt(resultados.getInt("Apellido"), fila, 2);
-                tablaseleccionar.setValueAt(resultados.getInt("Rut"), fila, 0);
-                tablaseleccionar.setValueAt(resultados.getInt("Edad"), fila, 0);
-                tablaseleccionar.setValueAt(resultados.getInt("Direccion"), fila, 0);
-                tablaseleccionar.setValueAt(resultados.getInt("Sexo"), fila, 0);
+                tablaseleccionar.setValueAt(resultados.getInt("Rut"), fila, 3);
+                tablaseleccionar.setValueAt(resultados.getInt("Edad"), fila, 4);
+                tablaseleccionar.setValueAt(resultados.getInt("Direccion"), fila, 5);
+                tablaseleccionar.setValueAt(resultados.getInt("Sexo"), fila, 6);
                 fila++;  
                 
             }
@@ -99,6 +100,25 @@ public class GestionBD {
         }catch(ClassNotFoundException | SQLException e){
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
         }
+         
+    }
+     public void UpdateS(int id, String nom, String ape, int rut, int edad, String dire, String sexo){
+        try{
+            Class.forName(Driver);
+            conexion = DriverManager.getConnection(url);
+            
+            sentencia = conexion.createStatement();
+            String sql = "UPDATE CLIENTE SET ID = '"+id+"', NOMBRE = '"+nom+"' APELLIDO = '"+ape+"', RUT = '"+rut+"', "
+                       + "EDAD = '"+edad+"', DIRECCION = '"+dire+"' WHERE ID = '"+id+"'";
+                      
+            
+            sentencia.executeUpdate(sql);
+            sentencia.close();
+            conexion.close();
+        }catch(ClassNotFoundException | SQLException e){
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+        }
+         JOptionPane.showMessageDialog(null,"DATOS ACTUALIZADOS CON EXITO");
     }
  }
 
